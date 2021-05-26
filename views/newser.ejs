@@ -1,0 +1,38 @@
+<%- include('header') %> 
+    <!-- <h1>Enter <a class="name">name</a> to <a class="name">continue</a></h1> -->
+    <!-- <h1><a class="name">Enter</a> name <a class="name">to</a> continue</a></h1> -->
+    <!-- <h1>Enter <a class="name">name</a> to <a class="name">continue</a></h1> -->
+    <h1> <a class="name">Choose</a> a username to <a class="name">continue</a></h1>
+    <hr>
+    <br>
+    <form action="/newser/<%=code%>" method="post">
+        <input id="email" type="text" name="uname" maxlength="15" minlength="3" autofocus="autofocus" placeholder="username">
+        <br>
+        <br>
+        <input type="submit" value="submit">
+    </form>
+    <p class="name">Wacky chars are anything other than letters, numbers, underscores, dashes, and lambdas. Spaces are wacky.</p>
+    <p class="melange" id="warn"></p>
+    <br>
+    <p class="melange" id="long"></p>
+<script type="text/javascript">
+    document.addEventListener("keyup", (event) => {
+            let words = document.getElementById("email").value
+            let ptrn = /[^a-z|A-Z|_|0-9|λ|-]/ 
+            let matcher = words.match(ptrn)
+            console.log(matcher)
+            if (matcher !== null) {
+                document.getElementById("warn").innerHTML = "You have wacky chars in your name." 
+            } else {
+                document.getElementById("warn").innerHTML = ""
+            }
+            if (words.length > 10) {
+                document.getElementById("long").innerHTML = 15 - words.length + " chars left"
+            } else {
+                document.getElementById("long").innerHTML = ""
+            }
+        })
+
+</script>
+
+<%- include('footer') %> 

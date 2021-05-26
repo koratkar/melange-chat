@@ -1,0 +1,11 @@
+<%- include('header') %> 
+    <h1 class="port" id="port">Places</h1>
+    <%- include('nav') %>
+    <p>Conversations with interesting people.</p>
+    <hr>
+    <ul style="list-style: none; padding-left: 0;">
+        <% list.forEach(element => { %>
+            <li><%-element%></li>
+        <% }); %>
+    </ul>
+<%- include('footer') %> 

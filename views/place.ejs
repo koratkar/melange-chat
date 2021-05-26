@@ -1,0 +1,48 @@
+<%- include('header') %> 
+    <h1 class="port" id="port">Melange Chat: <a class="name" href=""><%=name%></a> in <a class="melange"><%=title%></a></h1>
+    <%- include('nav') %>
+    <p><%=description%></p>
+    <hr>
+    <iframe id="ch-data" style="overflow: scroll" src="/p/<%=title%>/rend" height="400" width="500" frameborder="0"></iframe>
+    <form action="/" method="post">
+        <input hidden id="username" value="<%=name%>">
+        <input id="text" name="userpost" type="text" maxlength="70" autofocus="autofocus">
+    </form>
+    <p class="melange" id="warn"></p>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        var lastchat = []
+        window.setInterval(()=>{
+            axios.get('/p/<%=title%>/raw')
+                .then((response) => {
+                    if (String(response.data.place) !== String(lastchat)) {
+                        document.getElementById("ch-data").contentWindow.location.reload()  
+                        lastchat = response.data.place
+                    } 
+                })
+
+        }, 500)
+        document.addEventListener('keyup', (event) => {
+            words = document.getElementById("text").value
+            if (event.key == 'Enter' && words !== '') {
+                user = document.getElementById("username").value
+                axios.post('/p/<%=title%>/say', {}, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*'
+                    },
+                    params: {
+                        user: user,
+                        text: words
+                    }
+                }).then(() => {
+                        document.getElementById("text").value = ""
+                    })
+            } else if (words.length > 60) {
+                document.getElementById("warn").innerHTML =  (70 - words.length) + " characters left."
+            } else {
+                document.getElementById("warn").innerHTML = ""
+            }
+        })
+    </script>
+<%- include('footer') %> 
